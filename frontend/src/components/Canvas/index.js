@@ -5,7 +5,7 @@ import styles from './canvas.module.css'
 // const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
 // const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
 
-const Canvas = (props) => {  
+const Canvas = (_props) => {  
   const canvasRef = useRef(null)
   let context;
   // hex info
@@ -26,16 +26,18 @@ const Canvas = (props) => {
 
   const testStart = (e) => {
     e.preventDefault()
+    // calculate mouse position
     const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
     const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
     const mouse = {x, y}
+    // generate a hexagon for each that should exist on the page
     hexagons.forEach(hex => generateHexagons(hex, mouse))
-    
   }
 
   const generateHexagons = (loc, mouse) => {
     const centerX = loc.x;
     const centerY = loc.y;
+    // figure out where the center would be for each of the surrounding hexagons
     const newCenters = [
       { x: centerX, y: centerY - 86.6 }, // top
       { x: centerX + 75, y: centerY - 43.3 }, // top right unfinished
@@ -44,27 +46,42 @@ const Canvas = (props) => {
       { x: centerX - 75, y: centerY - 43.3 }, // bottom left unfinished
       { x: centerX - 75, y: centerY + 43.3 }, // top left unfinished
     ]
-    newCenters.forEach(center => test(center, mouse))
+    newCenters.forEach(center => checkMouseInHex(center, mouse))
   }
 
-  const test = (center, mouse) => {
+  const hexExists = (hex) => {
+    // simple iteration through existing hexagons to see if the proposed ghost hex should be displayed. may scrap later
+    for (let i = 0; i < hexagons.length; i++) {
+      const oldHex = hexagons[i];
+      if (hex.x === oldHex.x && hex.y === oldHex.y) return true;
+    }
+    return false;
+  }
+
+  const checkMouseInHex = (center, mouse) => {
+    // mouse positions
     const x = mouse.x;
     const y = mouse.y;
-    let j= 5;
-    let oddNodes=false;
+
+    // calculating different edges of current hexagon
     const polyX = [-25, 25, 50, 25, -25, -50].map(num => center.x + num);
-    const polyY = [-43.3, -43.3, 0, 43.3, 43, 3, 0].map(num => center.y + num);
-    for (let i=0; i<6; i++) {
-      if ((polyY[i]<y && polyY[j]>=y)
-        || (polyY[j] < y && polyY[i] >= y))
-      {
-        if (polyX[i]+(y-polyY[i])/(polyY[j]-polyY[i])*(polyX[j]-polyX[i])<x) {
+    const polyY = [-43.3, -43.3, 0, 43.3, 43.3, 0].map(num => center.y + num);
+    
+    // iterating through the edges, checking to see if the mouse is currently within one of those other areas
+    let j = 5;
+    let oddNodes = false;
+    for (let i = 0; i < 6; i++) {
+      if ((polyY[i] < y && polyY[j] >= y) || (polyY[j] < y && polyY[i] >= y)) {
+        if (polyX[i] + (y - polyY[i]) / (polyY[j] - polyY[i]) * (polyX[j] - polyX[i] ) < x) {
           oddNodes = !oddNodes;
         }
       }
       j = i;
     }
-    if (oddNodes) setGhost(center)
+    if (oddNodes) {
+      // at this point we're setting the ghost, so it could be a good place to check if an existing hex is there
+      if (!hexExists(center)) setGhost(center)
+    }
   }
 
   function drawHexagon(x, y, color) {
