@@ -1,0 +1,16 @@
+
+.sidebar_container {
+  grid-area: side;
+  border: 3px dotted blue;
+}
+
+.main_map_area {
+  grid-area: map;
+  border: 3px dotted green;
+}
+.main_map_container {
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-areas: 'map map side';
+}

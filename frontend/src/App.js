@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import LoginFormPage from './components/LoginFormPage';
 import SignupFormPage from './components/SignupFormPage';
 import Navigation from "./components/Navigation";
+import MapArea from "./components/MapArea";
 import * as sessionActions from "./store/session";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Routes>
+        <Route path="/" exact={'true'} element={<MapArea />} />
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/signup" element={<SignupFormPage />} />
       </Routes>}
