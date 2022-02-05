@@ -5,7 +5,7 @@ import { setAttr } from '../../store/hexagon';
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const colors = ['red', 'blue', 'yellow', 'green', 'purple'];
+  const colors = ['orange', 'blue', 'yellow', 'green', 'purple'];
 
   const onClick = (type, value) => {
     dispatch(setAttr({ type, value }))

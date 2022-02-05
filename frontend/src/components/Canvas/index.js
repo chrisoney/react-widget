@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import styles from './canvas.module.css'
 
 // Get mouse location
@@ -6,13 +7,14 @@ import styles from './canvas.module.css'
 // const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
 
 const Canvas = (_props) => {  
-  const canvasRef = useRef(null)
+  const canvasRef = useRef(null);
   let context;
   // hex info
   const angle = 2 * Math.PI / 6;
   const radius = 50;
+  const hexAttrs = useSelector(state => state.hexagon.attributes)
   // set the initial hexagons. This will eventually be loaded from the backend but let's start simpler
-  const [hexagons, setHexagons] = useState([{ x: 500, y: 300 }])
+  const [hexagons, setHexagons] = useState([{ x: 500, y: 300, color: 'blue' }])
   // the ghost is the temporary hexagon that exists on hover
   const [ghost, setGhost] = useState(null)
 
@@ -80,7 +82,7 @@ const Canvas = (_props) => {
     }
     if (oddNodes) {
       // at this point we're setting the ghost, so it could be a good place to check if an existing hex is there
-      if (!hexExists(center)) setGhost(center)
+      if (!hexExists(center)) setGhost({ ...center, color: hexAttrs.color })
     }
   }
 
@@ -102,16 +104,16 @@ const Canvas = (_props) => {
     context.fillStyle = '#FFFFFF'
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
     // Existing hexagons
-    hexagons.forEach((hex) => drawHexagon(hex.x, hex.y, 'blue'))
-
+    hexagons.forEach((hex) => drawHexagon(hex.x, hex.y, hex.color))
+    
+    // rerender the canvas when ghost changes
     if (ghost) {
-      drawHexagon(ghost.x, ghost.y, 'red')
+      drawHexagon(ghost.x, ghost.y, hexAttrs.color)
     }
   }, [ghost])
   
   return (
     <>
-      {/* <button onClick={test}>click</button> */}
       <canvas
         ref={canvasRef}
         className={styles.canvas}
@@ -123,4 +125,4 @@ const Canvas = (_props) => {
   )
 }
 
-export default Canvas
+export default Canvas;

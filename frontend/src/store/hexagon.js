@@ -10,7 +10,7 @@ export const setAttr = (attr) => {
 
 const initialState = { 
   attributes: {
-    color: null,
+    color: 'blue',
     image: null
   } 
 };
