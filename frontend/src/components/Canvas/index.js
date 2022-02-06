@@ -18,12 +18,17 @@ const Canvas = (_props) => {
   // the ghost is the temporary hexagon that exists on hover
   const [ghost, setGhost] = useState(null)
 
-  const clickHandler = (e) => {
+  const clickHandler = (_e) => {
     // checks for the existance of a ghost hexagon
     if (ghost) {
       //adds the ghost if it exists 
       setHexagons([...hexagons, ghost])
     }
+  }
+
+  // Not a great fix. I'd like the logic to be more along the lines of "if we're no longer next to a hexagon, disappear that ghost"
+  const mouseLeave = (e) => {
+    setGhost(null)
   }
 
   const mapStart = (e) => {
@@ -32,7 +37,6 @@ const Canvas = (_props) => {
     const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
     const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
     const mouse = { x, y }
-    console.log(mouse)
     // generate a hexagon for each that should exist on the page
     hexagons.forEach(hex => generateHexagons(hex, mouse))
   }
@@ -74,7 +78,7 @@ const Canvas = (_props) => {
     const polyX = [-25, 25, 50, 25, -25, -50].map(num => center.x + num);
     const polyY = [-43.3, -43.3, 0, 43.3, 43.3, 0].map(num => center.y + num);
     
-    // iterating through the edges, checking to see if the mouse is currently within one of those other areas
+    
     let j = 5;
     let oddNodes = false;
     for (let i = 0; i < 6; i++) {
@@ -87,8 +91,13 @@ const Canvas = (_props) => {
     }
     if (oddNodes) {
       // at this point we're setting the ghost, so it could be a good place to check if an existing hex is there
-      if (!hexExists(center)) setGhost({ ...center, color: hexAttrs.color })
-    }
+      const existingHex = hexExists(center)
+      if (!existingHex) {
+        setGhost({ ...center, color: hexAttrs.color })
+      } else {
+        setGhost(null)
+      }
+    } 
   }
 
   function drawHexagon(x, y, color) {
@@ -124,6 +133,7 @@ const Canvas = (_props) => {
         className={styles.canvas}
         onClick={clickHandler}
         onMouseMove={mapStart}
+        onMouseLeave={mouseLeave}
         // style={{height: '100%', width: '100%'}}
         height="500px"
         width="500px"
