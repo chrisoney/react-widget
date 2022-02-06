@@ -14,7 +14,7 @@ const Canvas = (_props) => {
   const radius = 50;
   const hexAttrs = useSelector(state => state.hexagon.attributes)
   // set the initial hexagons. This will eventually be loaded from the backend but let's start simpler
-  const [hexagons, setHexagons] = useState([{ x: 500, y: 300, color: 'blue' }])
+  const [hexagons, setHexagons] = useState([{ x: 250, y: 250, color: 'blue' }])
   // the ghost is the temporary hexagon that exists on hover
   const [ghost, setGhost] = useState(null)
 
@@ -26,12 +26,13 @@ const Canvas = (_props) => {
     }
   }
 
-  const testStart = (e) => {
+  const mapStart = (e) => {
     e.preventDefault()
     // calculate mouse position
     const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
     const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
-    const mouse = {x, y}
+    const mouse = { x, y }
+    console.log(mouse)
     // generate a hexagon for each that should exist on the page
     hexagons.forEach(hex => generateHexagons(hex, mouse))
   }
@@ -55,15 +56,19 @@ const Canvas = (_props) => {
     // simple iteration through existing hexagons to see if the proposed ghost hex should be displayed. may scrap later
     for (let i = 0; i < hexagons.length; i++) {
       const oldHex = hexagons[i];
-      if (hex.x === oldHex.x && hex.y === oldHex.y) return true;
+      const diffX = Math.abs(hex.x - oldHex.x);
+      const diffY = Math.abs(hex.y - oldHex.y);
+      // trying to help estimate if a hex already exists. Might need to change based on how things progress
+      if (diffX < 1 && diffY < 1) {
+        return true;
+      }
     }
     return false;
   }
 
   const checkMouseInHex = (center, mouse) => {
     // mouse positions
-    const x = mouse.x;
-    const y = mouse.y;
+    const { x, y }  = mouse;
 
     // calculating different edges of current hexagon
     const polyX = [-25, 25, 50, 25, -25, -50].map(num => center.x + num);
@@ -118,9 +123,11 @@ const Canvas = (_props) => {
         ref={canvasRef}
         className={styles.canvas}
         onClick={clickHandler}
-        onMouseMove={testStart}
-        height="600px"
-        width="1000px" />
+        onMouseMove={mapStart}
+        // style={{height: '100%', width: '100%'}}
+        height="500px"
+        width="500px"
+      />
     </>
   )
 }
