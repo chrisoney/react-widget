@@ -7,6 +7,8 @@ import Navigation from "./components/Navigation";
 import MapArea from "./components/MapArea";
 import * as sessionActions from "./store/session";
 
+import ProtectedRoute from "./components/utils/ProtectedRoute";
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
