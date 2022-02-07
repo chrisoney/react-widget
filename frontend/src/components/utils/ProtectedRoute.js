@@ -12,7 +12,7 @@ const ProtectedRoute = props => {
         : (sessionLoaded && !user)
           ? <Redirect to='/'/>
           : null}
-  </Route>
+    </Route>
   )
 };
 
