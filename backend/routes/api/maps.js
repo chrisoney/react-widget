@@ -1,6 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { User, Map } = require('../../db/models');
+const { resourceNotFound } = require('../../utils/validation');
 const router = express.Router();
 
 // new map
@@ -24,7 +25,22 @@ router.get('/:id(\\d+)', asyncHandler(async (req, res) => {
 
   res.json({ map })
 
-}))
+}));
+
+// deleting a specific map
+router.delete('/:id(\\d+)', asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const mapToDelete = await Map.findByPk(id);
+
+  if (mapToDelete) {
+    await mapToDelete.destroy();
+    res.json({ id });
+  } else {
+    // if a map with that id cannot be found, we want to send the error from resourceNotFound down to our error middleware
+    next(resourceNotFound(id));
+  }
+}));
 
 
 module.exports = router;
