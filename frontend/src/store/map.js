@@ -14,7 +14,7 @@ const getMaps = (maps) => ({
   payload: maps
 });
 
-const removeMaps = (id) => ({
+const removeMap = (id) => ({
   type: REMOVE_MAP,
   payload: id
 });
@@ -28,6 +28,18 @@ export const createMap = (startingAttrs, userId) => async (dispatch) => {
   const data = await res.json();
 
   dispatch(getMap(data.map));
+
+  return res;
+}
+
+export const deleteMap = (mapId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/maps/${mapId}`, {
+    method: 'DELETE'
+  });
+
+  const data = await res.json();
+
+  dispatch(removeMap(data.id));
   
   return res;
 }
