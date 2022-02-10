@@ -1,3 +1,5 @@
+import { csrfFetch } from './csrf';
+
 const ADD_MAP = 'map/addMap';
 const ADD_MAPS = 'map/addMaps';
 const REMOVE_MAP = 'map/removeMap';
@@ -16,6 +18,19 @@ const removeMaps = (id) => ({
   type: REMOVE_MAP,
   payload: id
 });
+
+export const createMap = (startingAttrs, userId) => async (dispatch) => {
+  const res = await csrfFetch('/api/maps', {
+    method: 'POST',
+    body: JSON.stringify({ startingAttrs, userId })
+  });
+
+  const data = await res.json();
+
+  dispatch(getMap(data.map));
+  
+  return res;
+}
 
 const initialState = { 
   maps: null
