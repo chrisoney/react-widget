@@ -42,5 +42,22 @@ router.delete('/:id(\\d+)', asyncHandler(async (req, res, next) => {
   }
 }));
 
+router.push('/:id(\\d+)', asyncHandler( async(req, res) => {
+  const { id } = req.params;
+  const { hexagons, startingAttrs } = req.body;
+
+  const mapToEdit = await Map.findByPk(id);
+
+  if (mapToEdit) {
+    mapToEdit.hexagons = hexagons;
+    mapToEdit.startingAttrs = startingAttrs;
+    await mapToEdit.save();
+    res.json({ map: mapToEdit });
+  } else {
+    // if a map with that id cannot be found, we want to send the error from resourceNotFound down to our error middleware
+    next(resourceNotFound(id));
+  }
+}))
+
 
 module.exports = router;
