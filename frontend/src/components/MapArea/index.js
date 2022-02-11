@@ -1,9 +1,17 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './mapArea.module.css';
 import Sidebar from '../Sidebar';
 import Canvas from '../Canvas';
+import { editMap } from '../../store/map';
 
-const MapArea = () => {
+
+const MapArea = (id) => {
+  const map = useSelector(state => state.maps.maps[id]);
+  const dispatch = useDispatch();
+  const saveMap = () => {
+    dispatch(editMap(id, hexagons, startingAttrs));
+  }
   const draw = (ctx, frameCount) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     ctx.fillStyle = '#000000'

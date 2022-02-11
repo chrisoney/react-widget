@@ -44,6 +44,19 @@ export const deleteMap = (mapId) => async (dispatch) => {
   return res;
 }
 
+export const editMap = (mapId, hexagons, startingAttrs) => async (dispatch) => {
+  const res = await csrfFetch(`/api/maps/${mapId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ hexagons, startingAttrs })
+  });
+
+  const data = await res.json();
+
+  dispatch(getMap(data.map));
+  
+  return res;
+}
+
 const initialState = { 
   maps: null
 };
