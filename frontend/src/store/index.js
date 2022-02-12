@@ -2,10 +2,12 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import sessionReducer from './session';
 import hexagonReducer from './hexagon';
+import mapReducer from './map';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  hexagon: hexagonReducer
+  hexagon: hexagonReducer,
+  maps: mapReducer
 });
 
 let enhancer;

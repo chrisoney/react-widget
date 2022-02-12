@@ -58,7 +58,7 @@ export const editMap = (mapId, hexagons, startingAttrs) => async (dispatch) => {
 }
 
 const initialState = { 
-  maps: null
+  maps: []
 };
 
 const mapsReducer = (state = initialState, action) => {
