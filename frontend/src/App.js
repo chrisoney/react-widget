@@ -6,6 +6,7 @@ import SignupFormPage from './components/SignupFormPage';
 import Navigation from "./components/Navigation";
 import MapArea from "./components/MapArea";
 import Splash from './components/Splash';
+import Maps from './components/Maps';
 import * as sessionActions from "./store/session";
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
@@ -23,6 +24,7 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Routes>
         <Route path="/" exact={'true'} element={sessionUser ? <MapArea /> : <Splash />} />
+        <Route path="/maps" element={<Maps />} />
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/signup" element={<SignupFormPage />} />
       </Routes>}
