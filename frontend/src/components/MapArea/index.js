@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './mapArea.module.css';
 import Sidebar from '../Sidebar';
@@ -9,6 +9,11 @@ import { editMap } from '../../store/map';
 const MapArea = (id) => {
   const map = useSelector(state => state.maps.maps[id]);
   const dispatch = useDispatch();
+  let hexagons = [];
+  const [startingAttrs, setStartingAttrs] = useState({
+    color: 'blue',
+    image: null
+  });
   const saveMap = () => {
     dispatch(editMap(id, hexagons, startingAttrs));
   }
@@ -23,10 +28,10 @@ const MapArea = (id) => {
   return (
     <div className={styles.main_map_container}>
       <div className={styles.main_map_area}>
-        <Canvas draw={draw} />
+        <Canvas draw={draw} outerHexagons={hexagons} />
       </div>
       <div className={styles.sidebar_container}>
-        <Sidebar />
+        <Sidebar saveMap={saveMap} setStartingAttrs={setStartingAttrs}/>
       </div>
     </div>
   )

@@ -42,7 +42,7 @@ router.delete('/:id(\\d+)', asyncHandler(async (req, res, next) => {
   }
 }));
 
-router.put('/:id(\\d+)', asyncHandler( async(req, res) => {
+router.put('/:id(\\d+)', asyncHandler( async (req, res) => {
   const { id } = req.params;
   const { hexagons, startingAttrs } = req.body;
 

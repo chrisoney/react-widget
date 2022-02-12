@@ -6,7 +6,7 @@ import styles from './canvas.module.css'
 // const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
 // const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
 
-const Canvas = (_props) => {  
+const Canvas = ({ outerHexagons, setStartingAttrs }) => {  
   const canvasRef = useRef(null);
   let context;
   // hex info
@@ -14,7 +14,7 @@ const Canvas = (_props) => {
   const radius = 50;
   const hexAttrs = useSelector(state => state.hexagon.attributes)
   // set the initial hexagons. This will eventually be loaded from the backend but let's start simpler
-  const [hexagons, setHexagons] = useState([{ x: 250, y: 250, color: 'blue' }])
+  const [hexagons, setHexagons] = useState([...outerHexagons])
   // the ghost is the temporary hexagon that exists on hover
   const [ghost, setGhost] = useState(null)
 
@@ -125,6 +125,10 @@ const Canvas = (_props) => {
       drawHexagon(ghost.x, ghost.y, hexAttrs.color)
     }
   }, [ghost])
+
+  useEffect(() => {
+    setStartingAttrs({...hexAttrs});
+  }, [hexAttrs])
   
   return (
     <>
