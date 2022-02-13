@@ -19,6 +19,16 @@ const removeMap = (id) => ({
   payload: id
 });
 
+export const fetchAllMaps = () => async (dispatch) => {
+  const res = await csrfFetch(('/api/maps'));
+
+  const data = await res.json();
+
+  dispatch(getMaps(data.maps));
+
+  return res;
+}
+
 export const createMap = (startingAttrs, userId) => async (dispatch) => {
   const res = await csrfFetch('/api/maps', {
     method: 'POST',
