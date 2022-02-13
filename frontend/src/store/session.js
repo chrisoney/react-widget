@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 const SET_SESSION_USER = 'session/setSessionUser';
 const REMOVE_SESSION_USER = 'session/removeSessionUser';
+const GET_USER_MAPS = 'session/getUserMaps';
 
 const setUser = (user) => {
   return {
@@ -15,6 +16,13 @@ const removeUser = () => {
     type: REMOVE_SESSION_USER,
   };
 };
+
+const getUserMaps = (maps) => {
+  return {
+    type: GET_USER_MAPS,
+    payload: maps
+  }
+}
 
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
@@ -60,7 +68,17 @@ export const logout = () => async (dispatch) => {
   return res;
 };
 
-const initialState = { user: null };
+export const fetchUserMaps = (id) => async (dispatch) => {
+  const res = await csrfFetch(`/api/users/${id}/maps`);
+
+  const data = res.json()
+  dispatch(getUserMaps(data.maps));
+
+  return res;
+}
+
+
+const initialState = { user: null, maps: [] };
 
 const sessionReducer = (state = initialState, action) => {
   let newState;
