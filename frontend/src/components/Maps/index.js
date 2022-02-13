@@ -25,7 +25,7 @@ const Maps = () => {
     <div className={styles.map_list_container}>
       <div className={styles.map_list_title}>My Maps</div>
       <ul className={styles.map_list}>
-        {myMapIds.forEach(mapId => {
+        {myMapIds.map(mapId => {
           const map = maps[mapId];
           return (<Link to={`/maps/${mapId}`}>{map.title}</Link>)
         })}
