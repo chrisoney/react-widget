@@ -25,9 +25,12 @@ function LoginFormPage() {
 
   return (
     <div className={styles.login_page_container}>
+      <div className={styles.side_image_container}>
+        {/* insert an appropriate image here. Maybe gears? */}
+      </div>
       <form onSubmit={handleSubmit} className={styles.login_form}>
         <ul>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+          {errors.map((error, idx) => <li key={idx} className={styles.error_message}>{error}</li>)}
         </ul>
         <label>
           Username or Email

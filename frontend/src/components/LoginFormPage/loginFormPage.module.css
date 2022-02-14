@@ -1,9 +1,20 @@
+/* Page styling */
+
 .login_page_container {
   display: flex;
   /* consider using a grid */
 }
 
+/* Image styling */
+
+
+/* Form styling */
+
 .login_form {
   display: flex;
   flex-direction: column;
+}
+
+.error_message {
+  color: red;
 }
