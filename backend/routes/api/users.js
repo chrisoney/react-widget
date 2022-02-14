@@ -38,4 +38,15 @@ router.post('/', validateSignup, asyncHandler(async (req, res) => {
   });
 }));
 
+router.get('/:id(\\d+)/maps', asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const maps = await Map.findAll({
+    where: { userId: parseInt(id, 10) }
+  });
+
+  res.json({ maps })
+
+}))
+
 module.exports = router;
