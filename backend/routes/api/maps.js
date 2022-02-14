@@ -4,6 +4,14 @@ const { User, Map } = require('../../db/models');
 const { resourceNotFound } = require('../../utils/validation');
 const router = express.Router();
 
+// all maps
+
+router.get('/', asyncHandler(async (req, res) => {
+  const maps = await Map.findAll();
+
+  res.json({ maps })
+}))
+
 // new map
 router.post('/', asyncHandler(async (req, res) => {
   const { startingAttrs, userId } = req.body;
