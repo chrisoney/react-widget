@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styles from './mapArea.module.css';
 import Sidebar from '../Sidebar';
 import Canvas from '../Canvas';
 import { editMap } from '../../store/map';
 
 
-const MapArea = (id) => {
+const MapArea = () => {
+  const id = useParams();
   const map = useSelector(state => state.maps.maps[id]);
   const dispatch = useDispatch();
   const [startingAttrs, setStartingAttrs] = useState({
