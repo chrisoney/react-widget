@@ -1,0 +1,9 @@
+.login_page_container {
+  display: flex;
+  /* consider using a grid */
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+}
