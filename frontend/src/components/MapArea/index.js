@@ -26,19 +26,12 @@ const MapArea = () => {
     ctx.fill()
   }
 
-  return (
-    <div className={styles.main_map_container}>
-      <div className={styles.main_map_area}>
-        <Canvas
-          draw={draw}
-          outerHexagons={map || []}
-          setStartingAttrs={setStartingAttrs}
-        />
-      </div>
-      <div className={styles.sidebar_container}>
-        <Sidebar saveMap={saveMap} setStartingAttrs={setStartingAttrs}/>
-      </div>
-    </div>
+  return (      
+    <Canvas
+      draw={draw}
+      outerHexagons={map || []}
+      setStartingAttrs={setStartingAttrs}
+    />      
   )
 }
 

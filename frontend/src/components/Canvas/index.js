@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import Sidebar from '../Sidebar';
 import styles from './canvas.module.css'
 
 // Get mouse location
@@ -131,18 +132,23 @@ const Canvas = ({ outerHexagons, setStartingAttrs }) => {
   }, [hexAttrs])
   
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        className={styles.canvas}
-        onClick={clickHandler}
-        onMouseMove={mapStart}
-        onMouseLeave={mouseLeave}
-        // style={{height: '100%', width: '100%'}}
-        height="500px"
-        width="500px"
-      />
-    </>
+    <div className={styles.main_map_container}>
+      <div className={styles.main_map_area}>
+        <canvas
+          ref={canvasRef}
+          className={styles.canvas}
+          onClick={clickHandler}
+          onMouseMove={mapStart}
+          onMouseLeave={mouseLeave}
+          // style={{height: '100%', width: '100%'}}
+          height="500px"
+          width="500px"
+        />
+      </div>
+      <div className={styles.sidebar_container}>
+        <Sidebar />
+      </div>
+    </div>
   )
 }
 
