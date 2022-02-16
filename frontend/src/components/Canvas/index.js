@@ -7,7 +7,7 @@ import styles from './canvas.module.css'
 // const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
 // const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
 
-const Canvas = ({ outerHexagons, setStartingAttrs }) => {  
+const Canvas = ({ outerHexagons }) => {  
   const canvasRef = useRef(null);
   let context;
   // hex info
@@ -17,7 +17,22 @@ const Canvas = ({ outerHexagons, setStartingAttrs }) => {
   // set the initial hexagons. This will eventually be loaded from the backend but let's start simpler
   const [hexagons, setHexagons] = useState([...outerHexagons])
   // the ghost is the temporary hexagon that exists on hover
-  const [ghost, setGhost] = useState(null)
+  const [ghost, setGhost] = useState(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    context = canvas.getContext('2d')
+    // Draw for the board
+    context.fillStyle = '#FFFFFF'
+    context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+    // Existing hexagons
+    hexagons.forEach((hex) => drawHexagon(hex.x, hex.y, hex.color))
+    
+    // rerender the canvas when ghost changes
+    if (ghost) {
+      drawHexagon(ghost.x, ghost.y, hexAttrs.color)
+    }
+  }, [ghost])
 
   const clickHandler = (_e) => {
     // checks for the existance of a ghost hexagon
@@ -112,24 +127,9 @@ const Canvas = ({ outerHexagons, setStartingAttrs }) => {
     context.stroke();
   }
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    context = canvas.getContext('2d')
-    // Draw for the board
-    context.fillStyle = '#FFFFFF'
-    context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-    // Existing hexagons
-    hexagons.forEach((hex) => drawHexagon(hex.x, hex.y, hex.color))
-    
-    // rerender the canvas when ghost changes
-    if (ghost) {
-      drawHexagon(ghost.x, ghost.y, hexAttrs.color)
-    }
-  }, [ghost])
+  const saveMap = () => {
 
-  useEffect(() => {
-    setStartingAttrs({...hexAttrs});
-  }, [hexAttrs])
+  }
   
   return (
     <div className={styles.main_map_container}>
@@ -146,7 +146,7 @@ const Canvas = ({ outerHexagons, setStartingAttrs }) => {
         />
       </div>
       <div className={styles.sidebar_container}>
-        <Sidebar />
+        <Sidebar saveMap={saveMap}/>
       </div>
     </div>
   )
