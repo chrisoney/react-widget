@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styles from './mapArea.module.css';
-import Sidebar from '../Sidebar';
 import Canvas from '../Canvas';
 
 

@@ -2,12 +2,13 @@ import React, { useRef, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import Sidebar from '../Sidebar';
 import styles from './canvas.module.css'
+import { editMap } from '../../store/map';
 
 // Get mouse location
 // const x = e.pageX - canvasRef.current.getBoundingClientRect().left;
 // const y = e.pageY - canvasRef.current.getBoundingClientRect().top;
 
-const Canvas = ({ outerHexagons }) => {  
+const Canvas = ({ outerHexagons, id }) => {  
   const canvasRef = useRef(null);
   let context;
   // hex info
@@ -128,7 +129,7 @@ const Canvas = ({ outerHexagons }) => {
   }
 
   const saveMap = () => {
-
+    editMap(id, hexagons, hexAttrs);
   }
   
   return (
