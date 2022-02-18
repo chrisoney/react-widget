@@ -36,11 +36,12 @@ const Canvas = ({ outerHexagons, id }) => {
   }, [ghost])
 
   const clickHandler = (_e) => {
-    // checks for the existance of a ghost hexagon
+    // // checks for the existance of a ghost hexagon
     if (ghost) {
-      //adds the ghost if it exists 
+      //adds the ghost if it exists
       setHexagons([...hexagons, ghost])
     }
+    // console.log(canvasRef.current)
   }
 
   // Not a great fix. I'd like the logic to be more along the lines of "if we're no longer next to a hexagon, disappear that ghost"
